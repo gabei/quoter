@@ -1,5 +1,5 @@
 import { Component } from 'react'
-//import './Display.scss'
+import './Display.scss'
 
 export default class Display extends Component { 
     render() {
