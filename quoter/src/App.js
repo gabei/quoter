@@ -1,10 +1,10 @@
-import { Component }, React from 'react';
+import React from 'react';
 import Display from './Display/Display';
 import './App.css';
 
-class App extends Component() {
-  constructor() {
-    super();
+class App extends React.Component {
+  constructor(props){
+    super(props);
     this.state = {
       quote: '',
       loading: true
