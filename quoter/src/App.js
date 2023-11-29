@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import Display from './Display/Display';
 import './App.scss';
-import axios from 'axios';
+
 
 console.log(process.env.REACT_APP_API_KEY);
 
@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log("Make initial API call here");
+    console.log('fetch data here');
   }
 
   render(){
