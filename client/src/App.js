@@ -2,9 +2,6 @@ import { Component } from 'react';
 import Display from './Display/Display';
 import './App.scss';
 
-
-console.log(process.env.REACT_APP_API_KEY);
-
 class App extends Component {
   constructor(props){
     super(props);
@@ -14,11 +11,10 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    fetch('http://localhost:3000/quote')
-      .then((response)=>{
-        console.log(response);
-      })
+  async componentDidMount() {
+    const response = await fetch('http://localhost:2000/quote')
+      .then((res) => res.json());
+    console.log(response);
   }
 
   render(){

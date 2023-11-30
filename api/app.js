@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 2000;
 const  fetch = require('node-fetch')
+const cors = require('cors');
 
 require('dotenv').config();
 
@@ -15,11 +16,15 @@ const options = {
 async function callAPI(){
     const response = await fetch(process.env.API_URL, options);
     const data = await response.json();
+    console.log(data);
     return data;
 }
 
-app.get('/', (_, res)=> {
-    res.send(callAPI());
+
+app.use(cors());
+
+app.get('/quote', (_, res)=> {
+    callAPI().then((data) => res.send(data));
 });
 
 app.listen(port, ()=> {
