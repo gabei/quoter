@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 2000;
 const  fetch = require('node-fetch')
 
 require('dotenv').config();
@@ -18,10 +18,8 @@ async function callAPI(){
     return data;
 }
 
-callAPI();
-
-app.get('/quote', (_, res)=> {
-    res.send(callAPI);
+app.get('/', (_, res)=> {
+    res.send(callAPI());
 });
 
 app.listen(port, ()=> {

@@ -15,7 +15,10 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log('fetch data here');
+    fetch('http://localhost:3000/quote')
+      .then((response)=>{
+        console.log(response);
+      })
   }
 
   render(){
