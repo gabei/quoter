@@ -8,10 +8,12 @@ class App extends Component {
     this.state = {
       quote: '',
       author: '',
-      loading: true
+      loading: true,
+      background: 'red'
     }
 
     this.handleClick = this.handleClick.bind(this);
+    this.generateBGcolor = this.generateBGcolor.bind(this);
   }
 
   async componentDidMount() {
@@ -34,31 +36,38 @@ class App extends Component {
     this.setState({
       quote: response[0].quote,
       author: response[0].author,
-      loading: false
+      loading: false,
+      background: this.generateBGcolor()
     });
   }
 
+  generateBGcolor() {
+    let colors = ['red', 'blue', 'green', 'purple', 'yellow'];
+    let backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    return backgroundColor;
+  }
+
   render(){
-    let view = 
+
+    let view =
+    
       this.state.loading ? 
-      <div className = "container">
         <div className="loader"></div>
-      </div>
-        
-      : (
-        <div className = "container">
+      : 
+        <div>
           <Display
             quote={ this.state.quote } 
             author={ this.state.author }></Display>
-          <button className="quote-button"
-            onClick={ this.handleClick }
-            className="quote-button">Get a new quote</button>
+          <button 
+            className="quote-button"
+            onClick={ this.handleClick }>Get a new quote</button>
         </div>
-      )
-
+      
     return (
       <div className="App">
-        {view}
+        <div className={`container ${this.state.background}`}>
+          {view}
+        </div>
       </div>
     );
   }
