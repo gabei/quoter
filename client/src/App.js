@@ -50,9 +50,9 @@ class App extends Component {
           <Display
             quote={ this.state.quote } 
             author={ this.state.author }></Display>
-          <button 
+          <button className="quote-button"
             onClick={ this.handleClick }
-            className="quote-button">Click me</button>
+            className="quote-button">Get a new quote</button>
         </div>
       )
 
@@ -62,7 +62,6 @@ class App extends Component {
       </div>
     );
   }
-
 }
 
 export default App;
