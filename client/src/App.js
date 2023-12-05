@@ -14,14 +14,17 @@ class App extends Component {
   async componentDidMount() {
     const response = await fetch('http://localhost:2000/quote')
       .then((res) => res.json());
-    console.log(response);
+
+      this.setState({
+        quote: response[0].quote
+      })
   }
 
   render(){
     return (
       <div className="App">
         <div className = "container">
-          <Display></Display>
+          <Display quote={this.state.quote}></Display>
           <button className="quote-button">Click me</button>
         </div>
       </div>
