@@ -27,7 +27,7 @@ class App extends Component {
 
   async handleClick(){
     this.setState({ loading: true });
-    
+
     const response = await fetch('http://localhost:2000/quote')
     .then((res) => res.json());
 
@@ -39,16 +39,26 @@ class App extends Component {
   }
 
   render(){
-    return (
-      <div className="App">
+    let view = 
+      this.state.loading ? 
+      <div className = "container">
+        <div className="loader"></div>
+      </div>
+        
+      : (
         <div className = "container">
-          <Display 
+          <Display
             quote={ this.state.quote } 
             author={ this.state.author }></Display>
           <button 
             onClick={ this.handleClick }
             className="quote-button">Click me</button>
         </div>
+      )
+
+    return (
+      <div className="App">
+        {view}
       </div>
     );
   }

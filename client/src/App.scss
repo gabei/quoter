@@ -16,3 +16,32 @@ body {
     border: 1px solid white;
     margin: 0 auto;
 }
+
+.loader {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    border-top: 5px solid black;
+    animation: spin 0.25s linear infinite;
+}
+
+
+@keyframes spin {
+    0% {
+      transform: rotate(0deg);
+      //background-position: 100% 100%;
+    }
+    50% {
+      transform: rotate(180deg);
+      //background-position: 0% 0%;
+    }
+    
+    100% {
+      transform: rotate(360deg);
+      //background-position: 100% 100%;
+    }
+  }
