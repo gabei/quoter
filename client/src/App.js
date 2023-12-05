@@ -10,17 +10,32 @@ class App extends Component {
       author: '',
       loading: true
     }
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
   async componentDidMount() {
     const response = await fetch('http://localhost:2000/quote')
-      .then((res) => res.json());
+    .then((res) => res.json());
 
-      this.setState({
-        quote: response[0].quote,
-        author: response[0].author,
-        loading: false
-      })
+    this.setState({
+      quote: response[0].quote,
+      author: response[0].author,
+      loading: false
+    });
+  }
+
+  async handleClick(){
+    this.setState({ loading: true });
+    
+    const response = await fetch('http://localhost:2000/quote')
+    .then((res) => res.json());
+
+    this.setState({
+      quote: response[0].quote,
+      author: response[0].author,
+      loading: false
+    });
   }
 
   render(){
@@ -28,10 +43,11 @@ class App extends Component {
       <div className="App">
         <div className = "container">
           <Display 
-            quote = { this.state.quote } 
-            author = { this.state.author }>
-          </Display>
-          <button className="quote-button">Click me</button>
+            quote={ this.state.quote } 
+            author={ this.state.author }></Display>
+          <button 
+            onClick={ this.handleClick }
+            className="quote-button">Click me</button>
         </div>
       </div>
     );
