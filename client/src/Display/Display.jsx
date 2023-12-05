@@ -6,6 +6,7 @@ export default class Display extends Component {
         return (
             <div className="display">
                 <p>{this.props.quote}</p>
+                <p>- {this.props.author}</p>
             </div>
         )
     }

@@ -7,6 +7,7 @@ class App extends Component {
     super(props);
     this.state = {
       quote: '',
+      author: '',
       loading: true
     }
   }
@@ -16,7 +17,9 @@ class App extends Component {
       .then((res) => res.json());
 
       this.setState({
-        quote: response[0].quote
+        quote: response[0].quote,
+        author: response[0].author,
+        loading: false
       })
   }
 
@@ -24,7 +27,10 @@ class App extends Component {
     return (
       <div className="App">
         <div className = "container">
-          <Display quote={this.state.quote}></Display>
+          <Display 
+            quote = { this.state.quote } 
+            author = { this.state.author }>
+          </Display>
           <button className="quote-button">Click me</button>
         </div>
       </div>
