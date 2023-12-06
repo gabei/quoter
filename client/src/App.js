@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import Display from './Display/Display';
 import './App.scss';
+import timeoutAfter from './Error/timeout';
 
 class App extends Component {
   constructor(props){
@@ -16,16 +17,38 @@ class App extends Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.generateBGcolor = this.generateBGcolor.bind(this);
-    this.timeoutAfter = this.timeoutAfter.bind(this);
     this.handleError = this.handleError.bind(this);
   }
 
-  timeoutAfter(seconds){
-    return new Promise((_, reject) => {
-      setTimeout(()=> {
-        reject(new Error('The request could not reach the server. The API server may be down, or your connection may have bee interrupted. Reload the page to try again.'))
-      }, seconds);
+  async makeAPIcall(){
+    this.setState({ loading: true });
+
+    const response = await fetch('http://localhost:2000/quote')
+    .then((res) => res.json());
+
+    this.setState({
+      quote: response[0].quote,
+      author: response[0].author,
+      loading: false,
     });
+
+    return response;
+  }
+
+  async componentDidMount() {
+    try 
+      {
+        await Promise.race([this.makeAPIcall(), timeoutAfter()]);
+      }
+    catch(error)
+      {
+        this.handleError(error);
+      }
+  }
+
+  async handleClick(){
+    this.setState({ background: this.generateBGcolor( )})
+    this.makeAPIcall();
   }
 
   handleError(error){
@@ -33,46 +56,6 @@ class App extends Component {
       loading: false,
       error: true, 
       errorMessage: error
-    });
-  }
-
-  async makeAPIcall(){
-    return await fetch('http://localhost:2000/quote')
-    .then((res) => res.json());
-  }
-
-  async componentDidMount() {
-    try 
-      {
-      const response = await Promise.race(
-        [this.makeAPIcall(), this.timeoutAfter(6000)]
-      );
-
-      this.setState({
-        quote: response[0].quote,
-        author: response[0].author,
-        loading: false
-      });
-
-    }
-    catch(error)
-      {
-        this.handleError(error);
-      }
-
-    //this.makeAPIcall();
-  }
-
-  async handleClick(){
-    this.setState({ loading: true });
-
-    const response = await this.makeAPIcall();
-
-    this.setState({
-      quote: response[0].quote,
-      author: response[0].author,
-      loading: false,
-      background: this.generateBGcolor()
     });
   }
 
