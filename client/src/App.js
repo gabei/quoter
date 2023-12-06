@@ -9,29 +9,64 @@ class App extends Component {
       quote: '',
       author: '',
       loading: true,
-      background: 'red'
+      background: 'red',
+      error: false,
+      errorMessage: ''
     }
 
     this.handleClick = this.handleClick.bind(this);
     this.generateBGcolor = this.generateBGcolor.bind(this);
+    this.timeoutAfter = this.timeoutAfter.bind(this);
+    this.handleError = this.handleError.bind(this);
+  }
+
+  timeoutAfter(seconds){
+    return new Promise((_, reject) => {
+      setTimeout(()=> {
+        reject(new Error('The request could not reach the server. The API server may be down, or your connection may have bee interrupted. Reload the page to try again.'))
+      }, seconds);
+    });
+  }
+
+  handleError(error){
+    this.setState({
+      loading: false,
+      error: true, 
+      errorMessage: error
+    });
+  }
+
+  async makeAPIcall(){
+    return await fetch('http://localhost:2000/quote')
+    .then((res) => res.json());
   }
 
   async componentDidMount() {
-    const response = await fetch('http://localhost:2000/quote')
-    .then((res) => res.json());
+    try 
+      {
+      const response = await Promise.race(
+        [this.makeAPIcall(), this.timeoutAfter(2500)]
+      );
 
-    this.setState({
-      quote: response[0].quote,
-      author: response[0].author,
-      loading: false
-    });
+      this.setState({
+        quote: response[0].quote,
+        author: response[0].author,
+        loading: false
+      });
+
+    }
+    catch(error)
+      {
+        this.handleError(error);
+      }
+
+    //this.makeAPIcall();
   }
 
   async handleClick(){
     this.setState({ loading: true });
 
-    const response = await fetch('http://localhost:2000/quote')
-    .then((res) => res.json());
+    const response = await this.makeAPIcall();
 
     this.setState({
       quote: response[0].quote,
@@ -48,20 +83,27 @@ class App extends Component {
   }
 
   render(){
+    let view;
 
-    let view =
-    
-      this.state.loading ? 
-        <div className="loader"></div>
-      : 
-        <div>
+    if(this.state.loading){
+      view = 
+      <div className="loader"></div>
+    } 
+    else if(this.state.error){
+      view = 
+      <p>{`${this.state.errorMessage}`}</p>;
+    }
+    else {
+      view = 
+      <div>
           <Display
             quote={ this.state.quote } 
             author={ this.state.author }></Display>
           <button 
             className="quote-button"
             onClick={ this.handleClick }>Get a new quote</button>
-        </div>
+      </div>
+    }
       
     return (
       <div className="App">
