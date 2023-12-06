@@ -45,7 +45,7 @@ class App extends Component {
     try 
       {
       const response = await Promise.race(
-        [this.makeAPIcall(), this.timeoutAfter(2500)]
+        [this.makeAPIcall(), this.timeoutAfter(10000)]
       );
 
       this.setState({
