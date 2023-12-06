@@ -23,7 +23,7 @@ class App extends Component {
   async makeAPIcall(){
     this.setState({ loading: true });
 
-    const response = await fetch('http://localhost:2000/quote')
+    const response = await fetch('https://quoter-api-ytj3.onrender.com/quote')
     .then((res) => res.json());
 
     this.setState({
